@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>$.ajax() 함수를 사용한 읽기</title>
+<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
+<script id="itemTemplate" type="text/x-jquery-tmpl">
+	<table>
+		<thead><tr>
+				<td>name</td>
+				<td>email</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>${name}</td>
+				<td>${email}</td>
+			</tr>
+		</tbody>
+	</table>
+</script>
+<!-- <font color='blue'><strong>Template란</strong></font>으로 되어있는 것들은  {{html content}}식으로 해야 출력이 가능 함-->
+<script type="text/javascript">
+//다음 key
+
+
+	$(function(){
+		
+		$("#mybtn").click(function(){
+			$.ajax({
+				url:"/0901.RestController/rest/employees/ver3/lim.j", 
+				type:"get", 
+				dataType:"json", 
+				timeout:30000, 
+				cache:false,
+				success : function(json){
+					return false;
+				});
+			
+		$("#link").click(function(){
+			event.preventDefault();
+			alert("도착");
+			
+			
+			
+			/* $.getJSON("http://localhost:8888/0901.RestController/rest/employees/ver3/lim.j",{
+				"q" : k, 
+				"result" : 15, 
+				"pageno" : p, 
+				"sort" : "accu", 
+				"output" : "json", 
+				"apikey" : api_key 
+			},function(json){
+				pageCount = json.channel.pageCount;
+				var item = json.channel.item
+				
+				for(var i=0; i < item.length; i++){
+					for(var i=0; i<item.length;i++){
+						item[i].title = item[i].title.replace(/\&lt;/g,"<").replace(/\&gt;/g,">");
+					}
+				}
+					$("#list").append(table);
+					
+				
+			$("#itemTemplate").tmpl(item);
+				
+				
+			}).fail(function(){
+				alert("제대로 안됐어");
+			}).always(function(){//finally
+				isLoading=false;//로딩 아니다
+			});//callback : 남의 도메인의 JSON을 가지고 올 때 필요한 함수.
+				
+			}); */
+		});
+		
+		
+		function loadImage(k, p){
+			
+			if(isLoading){
+				return false;
+			}
+			isLoading=true;
+			$.getJSON("https://apis.daum.net/search/image?callback=?",{
+				"q" : k, 
+				"result" : 15, 
+				"pageno" : p, 
+				"sort" : "accu", 
+				"output" : "json", 
+				"apikey" : api_key 
+			},function(json){
+				pageCount = json.channel.pageCount;
+				var item = json.channel.item
+				
+				for(var i=0; i < item.length; i++){
+					for(var i=0; i<item.length;i++){
+						item[i].title = item[i].title.replace(/\&lt;/g,"<").replace(/\&gt;/g,">");
+					}
+				}
+					$("#list").append(table);
+					
+				
+			$("#itemTemplate").tmpl(item);
+				
+				
+			}).fail(function(){
+				alert("제대로 안됐어");
+			}).always(function(){//finally
+				isLoading=false;//로딩 아니다
+			});//callback : 남의 도메인의 JSON을 가지고 올 때 필요한 함수.
+		}
+</script>
+</head>
+<body>
+<!-- http://github.com/BorisMoore/jquery-tmpl -->
+	<h1>예제</h1>
+	<a id="link" href="/0901.RestController/rest/employees/ver3/lim.j">ㄱㄱ</a>
+	<div id="view"></div>
+	
+	
+</body>
+</html>

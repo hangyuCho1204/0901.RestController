@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
+<script id="itemTemplate" type="text/x-jquery-tmpl">
+	<table>
+		<thead><tr>
+				<td>name</td>
+				<td>email</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><img src=${image}></td>
+				<td>${author}</td>
+				<td>${publisher}</td>
+			</tr>
+		</tbody>
+	</table>
+</script>
+<script type="text/javascript">
+//다음 key
+
+	$(function(){
+		 $("form[name='form1']").submit(function(){
+			event.preventDefault();
+			var q = $("#keyword").val();
+			var image = "";
+			var author = "";
+			var publisher = "";
+			$.getJSON("/0901.RestController/rest/naver/book/search?keyword="+q,{
+				/* "image" : i,
+				"author" : a,
+				"publisher" : p */
+			},function(json){ 
+				var item = json.rss.channel.item;
+				$(item).each(function(){
+					image = this.image;
+					author = this.author;
+					publisher = this.publisher;
+					$("#itemTemplate").tmpl(this);
+				});
+				
+			}).fail(function(){
+				alert("제대로 안됐어");
+			}).always(function(){//finally
+				isLoading=false;//로딩 아니다
+			});
+			
+		}); 
+	});
+	
+</script>
+</head>
+
+<body>
+	<h1>도서검색</h1>
+	<form name="form1">
+		<input id="keyword" type="text">
+		<input type="submit" value="검색">
+	</form>
+	<div id="mydiv"></div>
+</body>
+</html>
